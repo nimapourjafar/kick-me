@@ -4,15 +4,14 @@ from discord import Member
 
 bot = commands.Bot(command_prefix='!')
 
-
-YOUR_USER_ID = 1234567890  # Replace 1234567890 with the ID of the user you want to disconnect
-
+kick_user_id = None
 
 @bot.event
 async def on_voice_state_update(member: Member, before, after):
-    if after.channel and member.id == YOUR_USER_ID:  # Replace YOUR_USER_ID with the ID of the user you want to disconnect
-        await asyncio.sleep(10)  # Wait for 10 seconds
-        await member.move_to(None)  # Disconnect the user from the voice channel
+    global kick_user_id
+    if after.channel and member.id == kick_user_id:
+        await asyncio.sleep(10)
+        await member.move_to(None)
 
 @bot.command()
 async def join(ctx):
@@ -23,4 +22,10 @@ async def join(ctx):
     else:
         await ctx.send("You are not connected to a voice channel.")
 
-bot.run('YOUR_BOT_TOKEN')  # Replace YOUR_BOT_TOKEN with your Discord bot token
+@bot.command()
+async def kick(ctx, user_id: int):
+    global kick_user_id
+    kick_user_id = user_id
+    await ctx.send(f"User with ID {user_id} will be kicked from the voice channel after 10 seconds.")
+
+bot.run('YOUR_BOT_TOKEN')
