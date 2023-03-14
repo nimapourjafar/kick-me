@@ -4,6 +4,10 @@ from discord import Member
 
 bot = commands.Bot(command_prefix='!')
 
+
+YOUR_USER_ID = 1234567890  # Replace 1234567890 with the ID of the user you want to disconnect
+
+
 @bot.event
 async def on_voice_state_update(member: Member, before, after):
     if after.channel and member.id == YOUR_USER_ID:  # Replace YOUR_USER_ID with the ID of the user you want to disconnect
